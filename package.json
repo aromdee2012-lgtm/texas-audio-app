@@ -1,0 +1,14 @@
+{
+  "name": "texas-intech-audio-rack",
+  "version": "1.0.0",
+  "description": "Pro 7-Layer Audio Rack Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.0"
+  }
+}

@@ -28,6 +28,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.stop();
+    app.quit(); // เปลี่ยนจาก app.stop() เป็น app.quit()
   }
 });

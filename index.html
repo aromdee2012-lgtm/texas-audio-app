@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>TEXAS INTECH - Audio Payer </title>
+    <style>
+        :root {
+            --bg-dark: #020305;
+            --rack-frame: #0b0f17;
+            --accent-gold: #f39c12;
+            --accent-cyan: #00f0ff;
+            --slider-height: 100px;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* หัวแบรนด์วิบวับ */
+        .brand-header {
+            text-align: center;
+            background: linear-gradient(135deg, #1a2536, #0d131a);
+            border: 3px solid var(--accent-gold);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 0 30px rgba(243, 156, 18, 0.8);
+            animation: brandBlink 1.5s infinite alternate;
+        }
+        @keyframes brandBlink {
+            0% { border-color: #f39c12; box-shadow: 0 0 20px rgba(243, 156, 18, 0.5); }
+            50% { border-color: #00f0ff; box-shadow: 0 0 35px rgba(0, 240, 255, 0.9); }
+            100% { border-color: #ff0055; box-shadow: 0 0 20px rgba(255, 0, 85, 0.5); }
+        }
+        .brand-title {
+            color: var(--accent-gold);
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 12px rgba(243, 156, 18, 0.9);
+        }
+        .brand-sub {
+            color: #00f0ff;
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin-top: 3px;
+        }
+
+        /* แผงปุ่ม Preset 10 แนวเพลงยอดนิยม */
+        .preset-panel {
+            background: #11161d;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 2px solid var(--accent-gold);
+            box-shadow: 0 0 12px rgba(243, 156, 18, 0.4);
+        }
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .preset-btn {
+            background: linear-gradient(180deg, #1f2937, #111827);
+            color: #d1d5db;
+            border: 1px solid #4b5563;
+            border-radius: 3px;
+            padding: 5px 2px;
+            font-size: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+        .preset-btn:hover { background: var(--accent-gold); color: #000; border-color: #fff; }
+
+        /* กรอบไฟเทคดิสโก้วิบวับรอบตู้แร็ค */
+        .cabinet-wrapper {
+            position: relative;
+            padding: 6px;
+            border-radius: 14px;
+            background: linear-gradient(0deg, #ff0055, #00f0ff, #33ff33, #f39c12, #ff0055, #9400d3);
+            background-size: 500% 500%;
+            animation: discoFlash 1.2s linear infinite;
+            box-shadow: 0 0 40px rgba(255, 0, 85, 0.9), 0 0 40px rgba(0, 240, 255, 0.9);
+            margin-bottom: 15px;
+        }
+        @keyframes discoFlash {
+            0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+            50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
+            100% { background-position: 0% 50%; filter: hue-rotate(360deg); }
+        }
+
+        .cabinet {
+            background: var(--rack-frame);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rack-unit {
+            background: linear-gradient(180deg, #1b222d, #10141c);
+            border: 2px solid #30363d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: relative;
+        }
+        .rack-ears {
+            position: absolute;
+            top: 0; bottom: 0; width: 12px;
+            background: linear-gradient(90deg, #30363d, #161b22);
+            border: 1px solid #000;
+        }
+        .rack-ears.left { left: 0; border-radius: 5px 0 0 5px; }
+        .rack-ears.right { right: 0; border-radius: 0 5px 5px 0; }
+        .rack-content { margin: 0 14px; }
+
+        .unit-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #30363d;
+            padding-bottom: 3px;
+        }
+
+        .deck-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .cassette-deck {
+            background: #11151d;
+            border: 1px solid #28303d;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        .cassette-window {
+            background: #090c10;
+            border: 1px solid #1f2937;
+            border-radius: 3px;
+            height: 55px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .tape-label {
+            position: absolute; top: 2px; left: 6px; right: 6px;
+            background: #eef2f3; color: #000; font-size: 8px; font-weight: bold; padding: 1px 3px; border-radius: 2px;
+            display: flex; justify-content: space-between;
+        }
+        .tape-spools { display: flex; gap: 20px; align-items: center; margin-top: 6px; }
+        .spool {
+            width: 22px; height: 22px; border: 2px solid #111; border-radius: 50%; background: #fff;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .spool.spin { animation: rotateSpool 1s linear infinite; }
+        @keyframes rotateSpool { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .spool-inner { width: 7px; height: 7px; background: #333; border-radius: 50%; position: relative; }
+        .spool-inner::before {
+            content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; background: var(--accent-gold); border-radius: 50%;
+        }
+
+        .progress-container {
+            margin-top: 6px;
+            background: #090c10;
+            padding: 4px 6px;
+            border-radius: 3px;
+            border: 1px solid #1f2937;
+        }
+        .progress-bar-track {
+            width: 100%;
+            height: 5px;
+            background: #1f2937;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00f0ff, #33ff33);
+            border-radius: 3px;
+        }
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: #8b949e;
+            margin-top: 3px;
+            font-family: monospace;
+        }
+
+        .piano-keys-panel {
+            display: flex;
+            gap: 2px;
+            background: #090c10;
+            padding: 4px;
+            border-radius: 3px;
+            border: 1px solid #1f2937;
+            margin-top: 6px;
+            justify-content: center;
+        }
+        .deck-key {
+            background: linear-gradient(180deg, #374151, #1f2937);
+            color: #d1d5db;
+            border: 1px solid #4b5563;
+            border-radius: 2px;
+            padding: 4px 6px;
+            font-size: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        .deck-key:active { background: var(--accent-gold); color: #000; }
+        .deck-key.rec { color: #f87171; }
+        .deck-key.rec.recording { background: #ff0055; color: #fff; animation: recBlink 0.5s infinite alternate; }
+        @keyframes recBlink { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .spectrum-screen {
+            background: #000; border: 1px solid #21262d; border-radius: 3px; height: 115px;
+            display: flex; align-items: flex-end; gap: 1px; padding: 4px; overflow: hidden;
+        }
+        .spec-bar {
+            flex: 1; background: linear-gradient(to top, #33ff33, #ffcc00, #ff0055, #00f0ff); height: 5%;
+        }
+
+        .eq-21-container {
+            display: flex; gap: 4px; overflow-x: auto; padding: 4px 0; background: #090d13;
+            border-radius: 3px; border: 1px solid #21262d; align-items: flex-end; justify-content: space-between; height: 125px;
+        }
+        .eq-col { display: flex; flex-direction: column; align-items: center; min-width: 16px; flex: 1; }
+        .fader-tall {
+            writing-mode: bt-lr; -webkit-appearance: slider-vertical;
+            width: 12px; height: var(--slider-height); background: transparent; cursor: pointer; accent-color: var(--accent-gold);
+        }
+        .eq-freq { font-size: 6px; color: #8b949e; margin-top: 2px; white-space: nowrap; }
+
+        .controls-grid { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .knob-box { display: flex; flex-direction: column; align-items: center; font-size: 9px; color: #8b949e; }
+        .knob-box label { margin-top: 2px; text-transform: uppercase; font-weight: 600; }
+        input[type=range] { accent-color: var(--accent-cyan); cursor: pointer; }
+        
+        .led-rack { display: flex; gap: 2px; background: #000; padding: 3px; border-radius: 2px; border: 1px solid #222; }
+        .led { width: 4px; height: 12px; background: #1a1a1a; border-radius: 1px; }
+        .led.g { background: #33ff33; box-shadow: 0 0 4px #33ff33; }
+        .led.y { background: #ffcc00; box-shadow: 0 0 4px #ffcc00; }
+        .led.r { background: #ff3333; box-shadow: 0 0 4px #ff3333; }
+
+        .playlist-panel {
+            background: #11161d; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; border: 2px solid #00f0ff;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+        }
+        .playlist-box {
+            background: #090d13; border: 1px solid #212936; border-radius: 3px; height: 65px; overflow-y: auto; padding: 4px; margin-top: 5px; font-size: 10px; color: #8b949e;
+        }
+        .playlist-item { padding: 3px 6px; cursor: pointer; border-bottom: 1px solid #161b22; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .playlist-item:hover { background: #1f2937; color: #fff; }
+        .playlist-item.active { color: var(--accent-cyan); font-weight: bold; background: #111a2e; text-shadow: 0 0 4px #00f0ff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="brand-header">
+        <div class="brand-title">TEXAS INTECH</div>
+        <div class="brand-sub">โปรแกรมเล่นเพลงที่บันทึกเสียงได้ By Jam aromdee</div>
+    </div>
+
+    <div class="playlist-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label style="font-size:10px; font-weight:bold; color:var(--accent-cyan);">📂 เพิ่มไฟล์เพลง (ไม่จำกัดจำนวน):</label>
+            <input type="file" id="audioFiles" accept="audio/*" multiple style="color:#fff; background:#1f2937; padding:3px; border-radius:3px; border:1px solid #00f0ff; font-size:9px; cursor:pointer;">
+        </div>
+        <div class="playlist-box" id="playlistBox">
+            <div style="text-align:center; padding-top:15px; color:#555;">ยังไม่มีเพลงในเพลย์ลิสต์ (คลิกเลือกไฟล์ด้านบน)</div>
+        </div>
+    </div>
+
+    <!-- แผงเลือก Preset 10 แนวเพลงยอดนิยม -->
+    <div class="preset-panel">
+        <div style="font-size:10px; font-weight:bold; color:var(--accent-gold); display:flex; justify-content:space-between;">
+            <span>🎚️ เลือกการปรับเสียงอัตโนมัติที่นี่หรือปรับเอง:</span>
+            <span id="activePresetName" style="color:var(--accent-cyan);">[CUSTOM / FLAT]</span>
+        </div>
+        <div class="preset-grid">
+            <button class="preset-btn" onclick="applyPreset('flat')">Flat</button>
+            <button class="preset-btn" onclick="applyPreset('pop')">Pop</button>
+            <button class="preset-btn" onclick="applyPreset('rock')">Rock</button>
+            <button class="preset-btn" onclick="applyPreset('live')">Live / ลูกทุ่ง</button>
+            <button class="preset-btn" onclick="applyPreset('dance')">Dance / EDM</button>
+            <button class="preset-btn" onclick="applyPreset('acoustic')">Acoustic</button>
+            <button class="preset-btn" onclick="applyPreset('hiphop')">Hip-Hop</button>
+            <button class="preset-btn" onclick="applyPreset('classical')">Classical</button>
+            <button class="preset-btn" onclick="applyPreset('jazz')">Jazz</button>
+            <button class="preset-btn" onclick="applyPreset('vocal')">Vocal / พูด</button>
+        </div>
+    </div>
+
+    <div class="cabinet-wrapper">
+        <div class="cabinet">
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 1: Cassette Deck & Live Spectrum Analyzer</span><span style="color:var(--accent-gold)" id="recStatusLabel">[READY]</span></div>
+                    <div class="deck-grid">
+                        <div class="cassette-deck">
+                            <div style="font-size:8px; color:var(--accent-cyan); margin-bottom:2px; font-weight:bold;">DECK A (MASTER PLAYER & REC)</div>
+                            <div class="cassette-window">
+                                <div class="tape-label"><span id="nowPlayingTitle">TEXAS TAPE-I</span><span>PRO</span></div>
+                                <div class="tape-spools">
+                                    <div class="spool" id="spoolA1"><div class="spool-inner"></div></div>
+                                    <div class="spool" id="spoolA2"><div class="spool-inner"></div></div>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar-track" id="progressTrack" onclick="seekAudio(event)">
+                                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                                </div>
+                                <div class="time-info">
+                                    <span id="currentTime">00:00</span>
+                                    <span id="totalDuration">00:00</span>
+                                </div>
+                            </div>
+                            <div class="piano-keys-panel">
+                                <button class="deck-key" onclick="deckPrev()">⏮</button>
+                                <button class="deck-key" onclick="deckPlay()">▶</button>
+                                <button class="deck-key" onclick="deckPause()">⏸</button>
+                                <button class="deck-key" onclick="deckNext()">⏭</button>
+                                <button class="deck-key" onclick="deckStop()">⏹</button>
+                                <button class="deck-key rec" id="recBtn" onclick="toggleRecording()">● REC</button>
+                            </div>
+                            <audio id="audioElement" style="display:none;"></audio>
+                        </div>
+                        <div class="cassette-deck" style="display:flex; flex-direction:column; justify-content:center;">
+                            <div style="font-size:8px; color:var(--accent-cyan); margin-bottom:2px; font-weight:bold;">VISUALIZER</div>
+                            <div class="spectrum-screen" id="spectrumScreen"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 2: 21-Band Master Graphic Equalizer</span><span style="color:var(--accent-gold)">[EQ LIVE]</span></div>
+                    <div class="eq-21-container" id="eq21Container"></div>
+                </div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 3: Tube Preamp & Harmonic Exciter</span><span>[VALVE]</span></div>
+                    <div class="controls-grid">
+                        <div class="knob-box"><input type="range" min="1" max="10" value="4" step="0.1" style="width:70px"><label>Input Gain</label></div>
+                        <div class="knob-box"><input type="range" min="0.5" max="2" value="1" step="0.1" oninput="setPreampGain(this.value)"><label>Drive</label></div>
+                        <div class="led-rack"><div class="led g"></div><div class="led y"></div><div class="led r"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 4: VCA Multi-Band Compressor</span><span>[COMP]</span></div>
+                    <div class="controls-grid">
+                        <div class="knob-box"><input type="range" min="-40" max="0" value="-15" style="width:70px"><label>Threshold</label></div>
+                        <div class="knob-box"><input type="range" min="1" max="20" value="6" style="width:70px"><label>Ratio</label></div>
+                        <div class="led-rack"><div class="led g"></div><div class="led y"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 5: Lexicon Digital Reverb & Hall FX</span><span>[REVERB]</span></div>
+                    <div class="controls-grid">
+                        <div class="knob-box"><input type="range" min="0" max="1" value="0.25" step="0.05" style="width:70px"><label>Rev Mix</label></div>
+                        <div class="knob-box"><input type="range" min="0.2" max="10" value="2.5" step="0.1" style="width:70px"><label>Decay</label></div>
+                        <div class="led-rack"><div class="led g"></div><div class="led r"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title"><span>Layer 6: Active Crossover & Sub Enhancer</span><span>[SUB]</span></div>
+                    <div class="controls-grid">
+                        <div class="knob-box"><input type="range" min="40" max="150" value="80" style="width:70px"><label>X-Over</label></div>
+                        <div class="knob-box"><input type="range" min="0" max="1" value="0.5" step="0.05" style="width:70px"><label>Sub Synth</label></div>
+                        <div class="led-rack"><div class="led g"></div><div class="led y"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-unit" style="border-color: #00ffcc66;">
+                <div class="rack-ears left"></div><div class="rack-ears right"></div>
+                <div class="rack-content">
+                    <div class="unit-title" style="color:var(--accent-cyan);"><span>Layer 7: Master Power Amplifier & Main Out</span><span>[POWER]</span></div>
+                    <div class="controls-grid">
+                        <div class="knob-box"><input type="range" min="0" max="1" value="0.9" step="0.01" style="width:80px" oninput="setMasterVolume(this.value)"><label style="color:var(--accent-cyan)">Master Vol</label></div>
+                        <div class="knob-box"><input type="range" min="-12" max="0" value="-1" style="width:70px"><label>Limit</label></div>
+                        <div class="led-rack">
+                            <div class="led g"></div><div class="led y"></div><div class="led r"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const audioElement = document.getElementById('audioElement');
+    const audioFilesInput = document.getElementById('audioFiles');
+    const playlistBox = document.getElementById('playlistBox');
+    const spectrumScreen = document.getElementById('spectrumScreen');
+    const spoolA1 = document.getElementById('spoolA1');
+    const spoolA2 = document.getElementById('spoolA2');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const currentTimeEl = document.getElementById('currentTime');
+    const totalDurationEl = document.getElementById('totalDuration');
+    const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+    const recBtn = document.getElementById('recBtn');
+    const recStatusLabel = document.getElementById('recStatusLabel');
+    const activePresetName = document.getElementById('activePresetName');
+
+    let playlist = [];
+    let currentIndex = 0;
+    let audioCtx, sourceNode, analyser, masterGainNode, preampNode, destStreamNode;
+    let mediaRecorder;
+    let recordedChunks = [];
+    let isRecording = false;
+    let eqFilters = [];
+    let eqSliders = [];
+    let isInitialized = false;
+
+    const barsCount = 30;
+    let bars = [];
+    for (let i = 0; i < barsCount; i++) {
+        let bar = document.createElement('div');
+        bar.className = 'spec-bar';
+        spectrumScreen.appendChild(bar);
+        bars.push(bar);
+    }
+
+    const frequencies = [
+        32, 63, 100, 160, 250, 400, 630, 
+        1000, 1600, 2500, 4000, 5000, 6300, 8000, 10000, 
+        12500, 14000, 16000, 18000, 20000, 22000
+    ];
+    
+    const eqContainer = document.getElementById('eq21Container');
+    frequencies.forEach((freq, index) => {
+        let col = document.createElement('div');
+        col.className = 'eq-col';
+        col.innerHTML = `
+            <input type="range" class="fader-tall" id="slider_${index}" min="-15" max="15" value="0" step="0.5" data-index="${index}" oninput="setEQ(this)">
+            <span class="eq-freq">${freq >= 1000 ? (freq/1000)+'k' : freq}</span>
+        `;
+        eqContainer.appendChild(col);
+        eqSliders.push(document.getElementById(`slider_${index}`));
+    });
+
+    // 10 Preset แนวเพลงยอดนิยม
+    const presets = {
+        flat:      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        pop:       [2,3,1,0,-1,1,3,4,3,1,0,1,2,3,4,3,2,1,1,0,0],
+        rock:      [5,4,2,0,-1,-2,1,3,4,2,0,1,3,5,6,5,4,3,2,1,1],
+        live:      [4,5,3,1,0,1,3,5,4,2,1,2,4,6,5,4,3,2,1,1,0], // แนวเพลงลูกทุ่ง/เพื่อชีวิต (เน้นเสียงร้องพุ่ง เบสแน่น)
+        dance:     [7,6,4,1,0,-1,2,4,2,0,-1,0,2,5,7,6,4,2,1,0,0],
+        acoustic:  [2,1,0,1,2,3,2,1,2,3,4,3,2,1,2,3,4,3,2,1,1],
+        hiphop:    [6,5,3,1,0,2,4,2,0,-1,0,1,3,5,6,4,2,1,0,0,0],
+        classical: [4,3,2,1,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1],
+        jazz:      [3,2,1,2,3,2,1,2,3,4,3,2,1,2,3,4,3,2,1,1,0],
+        vocal:     [-2,-3,-1,1,3,5,6,5,4,3,4,5,4,2,1,0,-1,-2,-3,-3,-4]
+    };
+
+    function applyPreset(name) {
+        let pattern = presets[name];
+        if (!pattern) return;
+
+        pattern.forEach((val, index) => {
+            if (eqSliders[index]) {
+                eqSliders[index].value = val;
+                if (eqFilters[index]) {
+                    eqFilters[index].gain.value = val;
+                }
+            }
+        });
+        activePresetName.innerText = `[${name.toUpperCase()} PRESET]`;
+    }
+
+    audioFilesInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        files.forEach(file => {
+            playlist.push({ name: file.name, url: URL.createObjectURL(file) });
+        });
+        renderPlaylist();
+        if (playlist.length === files.length && audioElement.paused) {
+            playTrack(0);
+        }
+    });
+
+    function renderPlaylist() {
+        if (playlist.length === 0) return;
+        playlistBox.innerHTML = '';
+        playlist.forEach((track, index) => {
+            let item = document.createElement('div');
+            item.className = `playlist-item ${index === currentIndex ? 'active' : ''}`;
+            item.innerText = `${index + 1}. ${track.name}`;
+            item.onclick = () => playTrack(index);
+            playlistBox.appendChild(item);
+        });
+    }
+
+    function playTrack(index) {
+        if (playlist.length === 0) return;
+        currentIndex = index;
+        audioElement.src = playlist[currentIndex].url;
+        audioElement.play();
+        renderPlaylist();
+        initAudioEngine();
+        
+        let shortName = playlist[currentIndex].name;
+        if (shortName.length > 14) shortName = shortName.substring(0, 12) + '..';
+        nowPlayingTitle.innerText = shortName;
+    }
+
+    function deckPlay() { if (playlist.length > 0) audioElement.play(); }
+    function deckPause() { audioElement.pause(); }
+    function deckStop() { audioElement.pause(); audioElement.currentTime = 0; }
+    function deckNext() { if (playlist.length > 0) playTrack((currentIndex + 1) % playlist.length); }
+    function deckPrev() { if (playlist.length > 0) playTrack((currentIndex - 1 + playlist.length) % playlist.length); }
+
+    function toggleRecording() {
+        if (!isInitialized) {
+            alert("⚠️ กรุณากดเล่นเพลงก่อนเริ่มบันทึกเสียง!");
+            return;
+        }
+
+        if (!isRecording) {
+            try {
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(destStreamNode.stream);
+
+                mediaRecorder.ondataavailable = function(e) {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = function() {
+                    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'TEXAS-INTECH-MASTER-MIX.webm';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    alert("💾 บันทึกไฟล์เสียงเพลงจากเครื่องเรียบร้อยแล้ว!");
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                recBtn.classList.add('recording');
+                recBtn.innerText = '■ STOP';
+                recStatusLabel.innerText = '[RECORDING STREAM...]';
+                recStatusLabel.style.color = '#ff0055';
+            } catch (err) {
+                alert("⚠️ ไม่สามารถเริ่มบันทึกสตรีมเสียงได้: " + err.message);
+            }
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            recBtn.classList.remove('recording');
+            recBtn.innerText = '● REC';
+            recStatusLabel.innerText = '[READY]';
+            recStatusLabel.style.color = 'var(--accent-gold)';
+        }
+    }
+
+    function seekAudio(event) {
+        if (!audioElement.duration) return;
+        const track = document.getElementById('progressTrack');
+        const rect = track.getBoundingClientRect();
+        const pos = (event.clientX - rect.left) / rect.width;
+        audioElement.currentTime = pos * audioElement.duration;
+    }
+
+    audioElement.addEventListener('timeupdate', () => {
+        if (audioElement.duration) {
+            let percent = (audioElement.currentTime / audioElement.duration) * 100;
+            progressBarFill.style.width = percent + '%';
+            currentTimeEl.innerText = formatTime(audioElement.currentTime);
+            totalDurationEl.innerText = formatTime(audioElement.duration);
+        }
+    });
+
+    function formatTime(seconds) {
+        let mins = Math.floor(seconds / 60);
+        let secs = Math.floor(seconds % 60);
+        return (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    audioElement.addEventListener('ended', () => { deckNext(); });
+
+    function initAudioEngine() {
+        if (isInitialized) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return;
+        }
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        sourceNode = audioCtx.createMediaElementSource(audioElement);
+        
+        preampNode = audioCtx.createGain();
+        masterGainNode = audioCtx.createGain();
+        masterGainNode.gain.value = 0.9;
+
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 64;
+
+        destStreamNode = audioCtx.createMediaStreamDestination();
+
+        let lastNode = sourceNode;
+        preampNode.gain.value = 1.0;
+        lastNode.connect(preampNode);
+        lastNode = preampNode;
+
+        frequencies.forEach((freq, index) => {
+            let filter = audioCtx.createBiquadFilter();
+            filter.type = 'peaking';
+            filter.frequency.value = freq;
+            filter.gain.value = parseFloat(eqSliders[index].value);
+            filter.Q.value = 1.4;
+            lastNode.connect(filter);
+            lastNode = filter;
+            eqFilters.push(filter);
+        });
+
+        lastNode.connect(analyser);
+        analyser.connect(masterGainNode);
+        masterGainNode.connect(audioCtx.destination);
+        masterGainNode.connect(destStreamNode);
+
+        isInitialized = true;
+        updateVisualizer();
+    }
+
+    function setEQ(element) {
+        let index = element.getAttribute('data-index');
+        let val = parseFloat(element.value);
+        if (eqFilters[index]) {
+            eqFilters[index].gain.value = val;
+        }
+        activePresetName.innerText = "[CUSTOM EQ]";
+    }
+
+    function setPreampGain(val) {
+        if (preampNode) preampNode.gain.value = parseFloat(val);
+    }
+
+    function setMasterVolume(val) {
+        if (masterGainNode) masterGainNode.gain.value = parseFloat(val);
+    }
+
+    function updateVisualizer() {
+        if (!isInitialized) return;
+        let dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray);
+
+        for (let i = 0; i < barsCount; i++) {
+            let value = dataArray[i] || 0;
+            let heightPercent = (value / 255) * 100;
+            bars[i].style.height = Math.max(5, heightPercent) + '%';
+        }
+        requestAnimationFrame(updateVisualizer);
+    }
+
+    audioElement.addEventListener('play', () => {
+        spoolA1.classList.add('spin');
+        spoolA2.classList.add('spin');
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    });
+
+    audioElement.addEventListener('pause', () => {
+        spoolA1.classList.remove('spin');
+        spoolA2.classList.remove('spin');
+    });
+</script>
+
+</body>
+</html>
